@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Watch Doge : The Log Watcher Is Here</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.10/angular-material.min.css">
+</head>
+
+<body ng-app="dogeApp" ng-controller="dogeCtrl" layout="row" layout-fill="layout-fill" ng-cloak>
+<div layout="column" layout-fill="layout-fill">
+    <md-toolbar style="background-color: black">
+        <div class="md-toolbar-tools">
+            <h2 md-truncate>Watch Doge</h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <md-content layout="row" md-whiteframe="5" style="padding: 10px; margin: 10px">
+        <md-chips ng-model="includes" md-removable="true" placeholder="Include" flex></md-chips>
+        <md-chips ng-model="excludes" md-removable="true" placeholder="Exclude" flex></md-chips>
+        <input ng-model="lines" type="number" step="1" style="border: none; outline: none">
+    </md-content>
+    <md-content class="md-padding" scroll-glue layout="column" flex="flex">
+        <div>
+            <div ng-repeat="value in data | filter:dogeFilter">
+                <div ng-bind-html="format(value) | formatter" style="white-space: nowrap;"></div>
+            </div>
+        </div>
+    </md-content>
+</div>
+<script src="js/vendor/angular.min.js"></script>
+<script src="js/vendor/angular-animate.min.js"></script>
+<script src="js/vendor/angular-aria.min.js"></script>
+<script src="js/vendor/angular-messages.min.js"></script>
+<script src="js/vendor/socket.io.slim.js"></script>
+<script src="js/vendor/socket.min.js"></script>
+<script src="js/vendor/angular-material.min.js"></script>
+<script src="js/glue.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
