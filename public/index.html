@@ -16,14 +16,14 @@
         </div>
     </md-toolbar>
     <md-content layout="row" md-whiteframe="5" style="padding: 10px; margin: 10px">
-        <md-chips ng-model="includes" md-removable="true" placeholder="Include" flex></md-chips>
-        <md-chips ng-model="excludes" md-removable="true" placeholder="Exclude" flex></md-chips>
-        <input ng-model="lines" type="number" step="1" style="border: none; outline: none">
+        <md-chips ng-model="includes" md-removable="true" placeholder="Include" ng-change="onIncludeChange()" flex></md-chips>
+        <md-chips ng-model="excludes" md-removable="true" placeholder="Exclude" ng-change="onExcludeChange()" flex></md-chips>
+        <input ng-model="lines" type="number" step="1" style="border: none; outline: none; background-color: transparent">
     </md-content>
-    <md-content class="md-padding" scroll-glue layout="column" flex="flex">
+    <md-content class="md-padding" scroll-glue layout="column" flex="flex" md-whiteframe="5" style="padding: 10px; margin: 10px">
         <div>
-            <div ng-repeat="value in data | filter:dogeFilter">
-                <div ng-bind-html="format(value) | formatter" style="white-space: nowrap;"></div>
+            <div ng-repeat="value in filtered_lines |limitTo:-lines">
+                <div ng-bind-html="format(value) | html" style="white-space: nowrap;"></div>
             </div>
         </div>
     </md-content>

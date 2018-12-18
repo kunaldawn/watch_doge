@@ -47,14 +47,14 @@ func NewDoge(host string, file string, lines int, includes []string, exclude []s
 	return &Doge{socketServer: socketServer, httpServer: httpServer, tailMap: tailMap, box: box, file: file, host: host, includes: includes, excludes: exclude, lines: lines}
 }
 
-func (doge *Doge) Run() {
+func (doge *Doge) Run(user string, password string) {
 	doge.socketServer.SetMaxConnection(50000)
 	doge.socketServer.SetPingTimeout(10 * time.Second)
 	doge.socketServer.SetPingInterval(time.Second)
 
 	router := doge.httpServer.Group("/")
 	router.Use(gin.Logger())
-	router.Use(gin.BasicAuth(gin.Accounts{"admin": "admin"}))
+	router.Use(gin.BasicAuth(gin.Accounts{user: password}))
 	router.GET("/*path", doge.handler)
 	router.POST("/*path", doge.handler)
 	router.Handle("WSS", "/", doge.handler)
@@ -113,6 +113,8 @@ func (doge *Doge) spinTail() {
 
 func main() {
 	args := struct {
+		User     string   `long:"user" short:"u" description:"server user" required:"true"`
+		Pass     string   `long:"pass" short:"p" description:"server password" required:"true"`
 		Server   string   `long:"server" short:"s" description:"server host" required:"true"`
 		File     string   `long:"file" short:"f" description:"file to watch" required:"true"`
 		Lines    int      `long:"lines" short:"l" description:"number of lines to filter" required:"false"`
@@ -139,5 +141,5 @@ func main() {
 	}
 
 	doge := NewDoge(args.Server, args.File, args.Lines, args.Includes, args.Excludes)
-	doge.Run()
+	doge.Run(args.User, args.Pass)
 }
